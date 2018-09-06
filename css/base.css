@@ -29,11 +29,18 @@ li {
     display: block;
     height: 50px;
     line-height: 50px;
+    font-size: 14px;
 }
 
 .list-type li:hover {
     background: RGB(250, 251, 252);
     cursor: pointer;
+}
+
+.list-type li.active {
+    background: RGB(245, 246, 247);
+    border-left: 2px solid RGB(86, 107, 252);
+    font-weight: bold;
 }
 
 /*左侧新建清单按钮布局*/
@@ -51,7 +58,7 @@ li {
 
 /*右侧布局*/
 .right-pane {
-    flex: 4;
+    flex: 3;
 }
 
 .header {
@@ -72,9 +79,11 @@ li {
 /*todo item 布局*/
 .todo-item, .todo-add {
     display: block;
+    position: relative;
     height: 50px;
     line-height: 50px;
     padding-left: 10px;
+    text-align: left;
 }
 
 .todo-item:hover {
@@ -87,6 +96,15 @@ li {
     height: 1px;
     width: 100%;
     background: RGB(243, 243, 243);
+}
+
+.todo-item .icon-list {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+.todo-item .title {
+    display: inline-block;
 }
 
 .todo-title {
@@ -164,4 +182,104 @@ li {
 
 .todo-add input:focus {
     border: none;
+}
+
+/* 添加遮罩层 弹出框相关 */
+/*<div class="mask">
+    <div class="list-name-pane">
+        <input type="text" value="" placeholder="请输入清单名称">
+        <div class="submit">确定</div>
+        <div class="cancel">取消</div>
+    </div>
+</div>*/
+.mask {
+    display: none;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background: RGB(0, 0, 0, 0.3);
+}
+
+.list-name-pane {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    text-align: center;
+}
+
+.list-name-pane .pane-title {
+    flex: 1;
+    color: RGB(83, 85, 89);
+    text-align: left;
+    padding-left: 10%;
+    font-size: 20px;
+    line-height: 65px;
+}
+
+.list-name-pane .input-pane {
+    flex: 1;
+    font-size: 20px;
+    line-height: 65px;
+    border-top: 1px solid RGB(7, 17, 27, 0.2);
+    border-bottom: 1px solid RGB(7, 17, 27, 0.2);
+}
+
+.list-name-pane .input-pane input {
+    height: 40px;
+    width: 80%;
+    font-size: 16px;
+    border: none;
+}
+
+.list-name-pane .input-pane input:focus {
+    outline: none;
+}
+
+.list-name-pane .buttons {
+    flex: 1;
+    position: relative;
+}
+
+.list-name-pane .submit {
+    display: inline-block;
+    position: absolute;
+    width: 100px;
+    height: 40px;
+    right: 125px;
+    bottom: 10px;
+    border-radius: 10px;
+    line-height: 40px;
+    color: #fff;
+    background: RGB(0, 105, 217);
+}
+
+.list-name-pane .cancel {
+    display: inline-block;
+    position: absolute;
+    width: 50px;
+    height: 40px;
+    right: 48px;
+    bottom: 10px;
+    border-radius: 10px;
+    line-height: 40px;
+    color: #fff;
+    background: RGB(108, 117, 125);
+}
+
+.list-name-pane .submit:hover {
+    background: RGB(60, 91, 177);
+    cursor: pointer;
+}
+
+.list-name-pane .cancel:hover {
+    background: RGB(40, 44, 52);
+    cursor: pointer;
 }
