@@ -11,8 +11,8 @@ let $titleList = e('.list-type')
 let $todoList = e('.todo-list')
 
 // todo 项目模板
-let renderTodoTemplate = function(id, title, isChecked=false, isStared=false) {
-    let tmp = `
+let todoTemplate = function(id, title, isChecked=false, isStared=false) {
+    return `
         <li class="todo-item" id="${id}">
             <div class="check-todo ${isChecked ? 'checked' : ''}">
                 <i class="icon-checkmark"></i>
@@ -26,19 +26,17 @@ let renderTodoTemplate = function(id, title, isChecked=false, isStared=false) {
             </div>
         </li>
     `
-    $todoList.insertAdjacentHTML('beforeend', tmp)
 }
 // todo 清单标题模板
-let renderTitleTemplate = function(id, title, isActive=false) {
-    let tmp = `
+let titleTemplate = function(id, title, isActive=false) {
+    return `
         <li class="todo-item ${isActive ? 'active' : ''}" id="${id}">
             <span class="icon-list"></span>
             <span class="title">${title}</span>
         </li>
     `
-    $titleList.insertAdjacentHTML('beforeend', tmp)
 }
-
+// 绑定从文本框创建todo事件
 let bindAddTodoEvent = function(manager) {
     let addFocused = false
     $addTodoInput.addEventListener('focus', () => {
@@ -55,11 +53,12 @@ let bindAddTodoEvent = function(manager) {
             $addTodoInput.value = ''
             let todo = manager.addTodo(t)
             // 将todo渲染到页面上
-            renderTodoTemplate(todo.id, todo.title)
+            let tmp = todoTemplate(todo.id, todo.title)
+            $todoList.insertAdjacentHTML('beforeend', tmp)
         }
     })
 }
-
+// 绑定点击按钮添加todo清单事件
 let bindAddListEvent = function(manager) {
     // 点击弹出遮罩层事件
     $addListBtn.addEventListener('click', () => {
@@ -77,8 +76,51 @@ let bindAddListEvent = function(manager) {
             // manager添加并返回一个todoList对象
             let lst = manager.addList(title)
             // 渲染listTitle
-            renderListTitleTemplate(lst.id, lst.title)
+            let tmp = titleTemplate(lst.id, lst.title)
+            $titleList.insertAdjacentHTML('beforeend', tmp)
+            switchList(manager, lst.id)
             $mask.style.display = 'none'
         }
     })
+}
+// 切换清单
+let switchList = function(manager, newListId) {
+    let changeTitleHighlight = function(oldId, newId) {
+        if (oldId) {
+            let curr = $titleList.querySelector('#' + oldId)
+            removeClass(curr, 'active')
+        }
+        let next = $titleList.querySelector('#' + newId)
+        addClass(next, 'active')
+    }
+    let updateTodos = function() {
+        let html = ''
+        for (let t of manager.currTodos()) {
+            html += todoTemplate(t.id, t.title, t.isChecked, t.isStared)
+        }
+        $todoList.innerHTML = html
+    }
+    // 切换清单标题列表的高亮
+    changeTitleHighlight(manager.currListId, newListId)
+    // 切换manager中维护的当前listid
+    manager.changeCurrList(newListId)
+    // 更新todo列表中的todo事项为当前list下的事项
+    updateTodos()
+}
+// 绑定点击清单标题切换当前清单事件
+let bindClickListEvent = function(manager) {
+    delegate($titleList, 'click', 'li', (event, target) => {
+        let currListId = manager.currListId
+        let nextListId = target.id
+        if (currListId !== nextListId) {
+            switchList(manager, nextListId)
+        }
+    })
+}
+
+
+let bindEvents = function(manager) {
+    bindAddTodoEvent(manager)
+    bindAddListEvent(manager)
+    bindClickListEvent(manager)
 }

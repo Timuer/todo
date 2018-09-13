@@ -6,6 +6,9 @@ class TodoList {
         this.id = 'list-' + getId()
         this.sel = '#' + this.id
     }
+    getTodos() {
+        return this.lst
+    }
     activate() {
         this.isActive = true
         let dom = e(this.sel)
