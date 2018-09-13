@@ -120,6 +120,23 @@ let switchList = function(manager, newListId) {
     // 更新todo列表中的todo事项为当前list下的事项
     updateTodos()
 }
+// 将manager管理的list标题填充到清单标题列表中
+let populateTitles = function(manager) {
+    let html = ''
+    for (let t of manager.lists()) {
+        html += titleTemplate(t.id, t.title, t.isActive)
+    }
+    $titleList.innerHTML = html
+}
+// 将manager管理的todo事项填充到事项列表中
+let populateTodos = function(manager) {
+    let html = ''
+    for (let t of manager.currTodos()) {
+        html += todoTemplate(t.id, t.title, t.isChecked, t.isStared)
+    }
+    $todoList.innerHTML = html
+}
+
 // 绑定点击清单标题切换当前清单事件
 let bindClickListEvent = function(manager) {
     delegate($titleList, 'click', 'li', (event, target) => {

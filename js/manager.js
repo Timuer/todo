@@ -1,7 +1,14 @@
 class TodoListManager {
-    constructor() {
-        this.collection = {}
+    constructor(collection) {
+        this.collection = collection
         this.currListId = ""
+        this.init()
+    }
+    init() {
+        this.collection = this.collection || {}
+        let todoList = new TodoList('今日待办')
+        this.currListId = todoList.id
+        this.collection[todoList.id] = todoList
     }
     addTodo(title) {
         let todo = new Todo(title)
@@ -23,6 +30,9 @@ class TodoListManager {
     }
     currTodos() {
         return this.collection[this.currListId].getTodos()
+    }
+    lists() {
+        return Object.values(this.collection)
     }
     toggleTodoChecked(todoId) {
         let todos = this.collection[this.currListId].getTodos()

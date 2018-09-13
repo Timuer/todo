@@ -47,4 +47,4 @@
     }
     ```
 3. todo数据与操纵dom的代码仍然耦合在一起，不利于维护，重构类，让对象中仅包含必要数据，所有事件绑定、dom操纵代码放在一起
-4. 增删todo和增删todoList之间相互耦合，引入一个manager中介者来代理操作，管理依赖
+4. 增删todo和增删todoList之间相互耦合，引入一个manager中介者来代理操作，管理依赖，修改todo和todoList都需要通知manager来进行实际修改
