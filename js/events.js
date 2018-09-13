@@ -58,6 +58,19 @@ let bindAddTodoEvent = function(manager) {
         }
     })
 }
+// 绑定todo项目相关事件
+let bindTodoEvents = function(manager) {
+    delegate($todoList, 'click', '.check-todo', (event, target)=>{
+        let todoId = target.closest('li').id
+        manager.toggleTodoChecked(todoId)
+        toggleClass(target, 'checked')
+    })
+    delegate($todoList, 'click', '.star-todo', (event, target)=>{
+        let todoId = target.closest('li').id
+        manager.toggleTodoStared(todoId)
+        toggleClass(target, 'stared')
+    })
+}
 // 绑定点击按钮添加todo清单事件
 let bindAddListEvent = function(manager) {
     // 点击弹出遮罩层事件
@@ -123,4 +136,5 @@ let bindEvents = function(manager) {
     bindAddTodoEvent(manager)
     bindAddListEvent(manager)
     bindClickListEvent(manager)
+    bindTodoEvents(manager)
 }

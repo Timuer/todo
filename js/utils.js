@@ -17,6 +17,13 @@ let removeClass = function(elem, className) {
         elem.classList.remove(className)
     }
 }
+let toggleClass = function(elem, className) {
+    if (elem.classList.contains(className)) {
+        removeClass(elem, className)
+    } else {
+        addClass(elem, className)
+    }
+}
 let getId = function() {
     let id = new Date().getTime() + ''
     for (var i = 0; i < 5; i++) {
@@ -27,10 +34,14 @@ let getId = function() {
 let delegate = function(elem, type, sel, fn) {
     elem.addEventListener(type, (event) => {
         let target = event.target
-        while (!target.matches(sel)) {
+        // 事件目标元素向上冒泡
+        while (target !== elem && !target.matches(sel)) {
             target = target.parentElement
         }
-        target && fn.call(elem, event, target)
+        // 当前节点不为被代理的节点时才触发事件
+        if (target !== elem) {
+            target && fn.call(elem, event, target)
+        }
     })
     return elem
 }
