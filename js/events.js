@@ -110,7 +110,6 @@ let switchList = function(manager, newListId) {
     }
     let updateTodos = function() {
         let html = ''
-        log(manager.currTodos())
         for (let t of manager.currTodos()) {
             html += todoTemplate(t.id, t.title, t.isChecked, t.isStared)
         }
@@ -150,7 +149,7 @@ let bindClickListEvent = function(manager) {
         }
     })
 }
-
+// 将todo丢入垃圾桶
 let bindDragTodoEvent = function(manager) {
     delegate($todoList, 'dragstart', 'li', (event, target) => {
         $trash.style.display = 'block'
@@ -161,16 +160,33 @@ let bindDragTodoEvent = function(manager) {
     })
     $trash.addEventListener('dragover', (event) => {
         event.preventDefault()
+        $trash.style.background = 'RGB(235, 57, 65)'
+    })
+    $trash.addEventListener('dragleave', (event) => {
+        $trash.style.background = 'RGB(235, 125, 114)'
     })
     $trash.addEventListener('drop', (event) => {
         event.preventDefault()
         let todoId = event.dataTransfer.getData('todo-id')
         if (todoId) {
-            manager.deleteTodo(todoId)
             $todoList.querySelector('#'+todoId).remove()
+            manager.deleteTodo(todoId)
         }
+        // 拖拽到垃圾桶释放后让垃圾桶消失，背景重置
         $trash.style.display = 'none'
+        $trash.style.background = 'RGB(235, 125, 114)'
     })
+}
+
+let timerId = null
+let setAutoSave = function(manager, timeToSave=1000*30) {
+    if (timerId) {
+        clearInterval(timerId)
+        timerId = null
+    }
+    timerId = setInterval(function() {
+        manager.saveAll()
+    }, timeToSave)
 }
 
 let bindEvents = function(manager) {
@@ -179,4 +195,5 @@ let bindEvents = function(manager) {
     bindClickListEvent(manager)
     bindTodoEvents(manager)
     bindDragTodoEvent(manager)
+    setAutoSave(manager)
 }

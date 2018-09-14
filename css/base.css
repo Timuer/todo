@@ -297,5 +297,6 @@ li {
     font-weight: 600;
     text-align: center;
     color: RGB(255, 255, 255);
-    background: RGB(235, 60, 68);
+    background: RGB(235, 125, 114);
+    transition: all 0.2s linear;
 }
