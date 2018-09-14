@@ -101,3 +101,4 @@ class TodoListManager {
 }
 ```
 5. 为todo添加drag事件，拖拽todo到垃圾桶可以删除todo
+6. 使用localStorage将整个todo管理清单序列化并存储在本地，读取时需要先反序列化，创建对象然后将属性load到对象上，因为JSON序列化只能序列化属性，不能序列化方法。
