@@ -13,12 +13,16 @@ class TodoListManager {
     addTodo(title) {
         let todo = new Todo(title)
         let lst = this.collection[this.currListId]
-        lst.getTodos().forEach((elem) => {
-            if (elem.id === this.currListId) {
-                elem.addTodo(todo)
-            }
-        })
+        lst.addTodo(todo)
         return todo
+    }
+    deleteTodo(todoId) {
+        let lst = this.collection[this.currListId]
+        for (let i = lst.length-1; i >= 0; i--) {
+            if (lst[i].id === todoId) {
+                lst.splice(i, 1)
+            }
+        }
     }
     addList(title) {
         let lst = new TodoList(title)

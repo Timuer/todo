@@ -9,11 +9,13 @@ let $maskInput = e('.mask input')
 let $titleList = e('.list-type')
 // todo事项列表
 let $todoList = e('.todo-list')
+// 垃圾桶
+let $trash = e('.trash')
 
 // todo 项目模板
 let todoTemplate = function(id, title, isChecked=false, isStared=false) {
     return `
-        <li class="todo-item" id="${id}">
+        <li class="todo-item" id="${id}" draggable="true">
             <div class="check-todo ${isChecked ? 'checked' : ''}">
                 <i class="icon-checkmark"></i>
             </div>
@@ -108,6 +110,7 @@ let switchList = function(manager, newListId) {
     }
     let updateTodos = function() {
         let html = ''
+        log(manager.currTodos())
         for (let t of manager.currTodos()) {
             html += todoTemplate(t.id, t.title, t.isChecked, t.isStared)
         }
@@ -148,10 +151,32 @@ let bindClickListEvent = function(manager) {
     })
 }
 
+let bindDragTodoEvent = function(manager) {
+    delegate($todoList, 'dragstart', 'li', (event, target) => {
+        $trash.style.display = 'block'
+        event.dataTransfer.setData('todo-id', target.id)
+    })
+    delegate($todoList, 'dragend', 'li', (event, target) => {
+        $trash.style.display = 'none'
+    })
+    $trash.addEventListener('dragover', (event) => {
+        event.preventDefault()
+    })
+    $trash.addEventListener('drop', (event) => {
+        event.preventDefault()
+        let todoId = event.dataTransfer.getData('todo-id')
+        if (todoId) {
+            manager.deleteTodo(todoId)
+            $todoList.querySelector('#'+todoId).remove()
+        }
+        $trash.style.display = 'none'
+    })
+}
 
 let bindEvents = function(manager) {
     bindAddTodoEvent(manager)
     bindAddListEvent(manager)
     bindClickListEvent(manager)
     bindTodoEvents(manager)
+    bindDragTodoEvent(manager)
 }

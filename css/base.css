@@ -283,3 +283,19 @@ li {
     background: RGB(40, 44, 52);
     cursor: pointer;
 }
+
+/*垃圾桶样式*/
+.trash {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 40px;
+    bottom: 0;
+    left: 0;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    color: RGB(255, 255, 255);
+    background: RGB(235, 60, 68);
+}
