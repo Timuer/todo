@@ -1,6 +1,7 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Microsoft Yahei','PingFang SC',sans-serif;
 }
 li {
     list-style: none;
@@ -199,7 +200,7 @@ li {
     top: 0;
     left: 0;
     bottom: 0;
-    background: RGB(0, 0, 0, 0.3);
+    background: RGBA(0, 0, 0, 0.3);
 }
 
 .list-name-pane {
@@ -228,8 +229,8 @@ li {
     flex: 1;
     font-size: 20px;
     line-height: 65px;
-    border-top: 1px solid RGB(7, 17, 27, 0.2);
-    border-bottom: 1px solid RGB(7, 17, 27, 0.2);
+    border-top: 1px solid RGBA(7, 17, 27, 0.2);
+    border-bottom: 1px solid RGBA(7, 17, 27, 0.2);
 }
 
 .list-name-pane .input-pane input {
