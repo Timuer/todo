@@ -9,8 +9,12 @@ let $maskInput = e('.mask input')
 let $titleList = e('.list-type')
 // todo事项列表
 let $todoList = e('.todo-list')
+// 当前清单标题
+let $title = e('.list-title')
 // 垃圾桶
 let $trash = e('.trash')
+// 保存按钮
+let $saveBtn = e('.save-btn')
 
 // todo 项目模板
 let todoTemplate = function(id, title, isChecked=false, isStared=false) {
@@ -114,6 +118,7 @@ let switchList = function(manager, newListId) {
             html += todoTemplate(t.id, t.title, t.isChecked, t.isStared)
         }
         $todoList.innerHTML = html
+        renderTitle(manager)
     }
     // 切换清单标题列表的高亮
     changeTitleHighlight(manager.currListId, newListId)
@@ -138,7 +143,9 @@ let populateTodos = function(manager) {
     }
     $todoList.innerHTML = html
 }
-
+let renderTitle = function(manager) {
+    $title.innerText = manager.currTitle()
+}
 // 绑定点击清单标题切换当前清单事件
 let bindClickListEvent = function(manager) {
     delegate($titleList, 'click', 'li', (event, target) => {
@@ -188,7 +195,12 @@ let setAutoSave = function(manager, timeToSave=1000*30) {
         manager.saveAll()
     }, timeToSave)
 }
-
+let bindClickSave = function(manager) {
+    $saveBtn.addEventListener('click', function(event) {
+        event.preventDefault()
+        manager.saveAll()
+    })
+}
 let bindEvents = function(manager) {
     bindAddTodoEvent(manager)
     bindAddListEvent(manager)
@@ -196,4 +208,5 @@ let bindEvents = function(manager) {
     bindTodoEvents(manager)
     bindDragTodoEvent(manager)
     setAutoSave(manager)
+    bindClickSave(manager)
 }

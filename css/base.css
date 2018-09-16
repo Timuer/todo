@@ -69,12 +69,30 @@ li {
     background: RGB(235, 125, 114);
 }
 
-.list-title {
+.header .list-title {
     position: absolute;
     left: 20px;
     bottom: 20px;
     font-size: 30px;
     color: #fff;
+}
+
+.header .save-btn {
+    position: absolute;
+    width: 100px;
+    height: 35px;
+    right: 20px;
+    bottom: 20px;
+    color: #fff;
+    background: RGB(38, 102, 212);
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 35px;
+    border: none;
+    cursor: pointer;
+}
+.header .save-btn:hover {
+    background: RGB(21, 61, 174);
 }
 
 /*todo item 布局*/
@@ -173,6 +191,10 @@ li {
 }
 
 /*添加Todo相关*/
+.todo-add {
+    border-bottom: 1px solid RGBA(7, 17, 27, 0.1);
+    border-left: 3px solid RGB(86, 107, 252);
+}
 .todo-add input {
     width: 100%;
     height: 100%;

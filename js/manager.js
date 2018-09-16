@@ -8,10 +8,15 @@ class TodoListManager {
         this.loadAll()
         if (!this.collection) {
             this.collection = {}
-            let todoList = new TodoList('今日待办')
-            this.currListId = todoList.id
-            this.collection[todoList.id] = todoList
+            this.checkList = this.addList('我的已办')
+            this.starList = this.addList('我的收藏')
+            let currList = this.addList('今日待办')
+            currList.activate()
+            this.currListId = currList.id
         }
+    }
+    currTitle() {
+        return this.collection[this.currListId].title
     }
     addTodo(title) {
         let todo = new Todo(title)
@@ -41,8 +46,13 @@ class TodoListManager {
     toggleTodoChecked(todoId) {
         let todos = this.collection[this.currListId].getTodos()
         for (let t of todos) {
+            t.isChecked = !t.isChecked
             if (t.id === todoId) {
-                t.isChecked = !t.isChecked
+                if (t.isChecked) {
+                    this.checkList.lst.push(t)
+                } else {
+                    this.checkList.lst = this.checkList.lst.filter((elem) => elem !== t)
+                }
                 return
             }
         }
@@ -52,6 +62,11 @@ class TodoListManager {
         for (let t of todos) {
             if (t.id === todoId) {
                 t.isStared = !t.isStared
+                if (t.isStared) {
+                    this.starList.lst.push(t)
+                } else {
+                    this.starList.lst = this.starList.lst.filter((elem) => elem !== t)
+                }
                 return
             }
         }
@@ -85,6 +100,12 @@ class TodoListManager {
                 let l = new TodoList()
                 l.load(o[k])
                 this.collection[k] = l
+                // 判断该list是不是默认list，是就维护在对象内
+                if (l.title === '我的收藏') {
+                    this.starList = l
+                } else if (l.title === '我的已办') {
+                    this.checkList = l
+                }
             }
         }
     }

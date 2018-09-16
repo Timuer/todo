@@ -1,6 +1,7 @@
 let initialize = function(manager) {
     populateTitles(manager)
     populateTodos(manager)
+    renderTitle(manager)
 }
 
 let main = function() {

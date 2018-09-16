@@ -4,7 +4,7 @@ class TodoList {
         this.id = 'list-' + getId()
         this.title = title
         this.sel = '#' + this.id
-        this.isActive = true
+        this.isActive = false
     }
     load(opt) {
         this.lst = opt.lst.map((elem) => {
@@ -16,6 +16,9 @@ class TodoList {
         this.title = opt.title
         this.sel = opt.sel
         this.isActive = opt.isActive
+    }
+    activate() {
+        this.isActive = true
     }
     getTodos() {
         return this.lst
